@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="index.js"></script>
+</head>
+<body>
+    <h1>Pong GAME (made by js maker)</h1>
+    <h2 id="control">Controls</h2>
+    <canvas id="canvas"></canvas>
+    <p>S : aller en bas<br>W : aller en haut</p>
+</body>
+<!--Dising de la page (pas le canvas)-->
+<style>
+    body{
+        background-color: rgb(17, 17, 17);
+    }
+    h1{
+        color: white;
+        text-align: center;
+        font-family: Verdana, Geneva, Tahoma, sans-serif;
+    }
+    h2#control{
+        color: white;
+        font-family: Verdana, Geneva, Tahoma, sans-serif;
+        position: relative;
+        top: 90px;
+        left: 100px;
+    }
+    p{
+        font-family: Verdana, Geneva, Tahoma, sans-serif;
+        color: white;
+        position: relative;
+        top: -520px;
+        left: 95px;
+    }
+</style>
+<script>
+    var ball = {
+        x: 10,
+        y: 10,
+        r: 10,
+        c: 'red',
+        speedX: 5,
+        speedY: 5,
+    }
+    var palette = {
+        x: 0,
+        y: 300,
+        width: 20,
+        height: 180,
+        color: 'cyan',
+        speed: 3
+    }
+    var key;
+    document.onkeypress = function(event)
+    {
+        key = String.fromCharCode(event.keyCode);
+    }
+    function main()
+    {
+        
+        game.drawCercle(ball.x, ball.y, ball.r, ball.c);
+        
+        game.drawRect(palette.x, palette.y, palette.width, palette.height, palette.color)
+        
+        window.requestAnimationFrame(main)
+    }
+    function update()
+    {
+        ball.x = ball.x + ball.speedX
+        ball.y = ball.y + ball.speedY
+        game.ctx.clearRect(0, 0, game.canvas.width, game.canvas.height)
+        if (ball.y > (600 - ball.r))
+        {
+            ball.y = 600 - (ball.r)
+            ball.speedY = -ball.speedY
+        }
+        if (ball.x > (800 - ball.r))
+        {
+            ball.x = 800 - (ball.r)
+            ball.speedX = -ball.speedX
+        }
+        if (ball.y < 0 + ball.r)
+        {
+            ball.y = 0 + ball.r
+            ball.speedY = -ball.speedY
+        }
+        if (ball.x < 0 + ball.r)
+        {
+            // perdu
+            ball.x = 0 + ball.r
+            ball.speedX = -ball.speedX
+            alert('perdu :(')
+        }
+        if (key == 's'){
+            palette.y = palette.y + palette.speed
+        }
+        if (key == 'w'){
+            palette.y = palette.y - palette.speed
+        }
+        if (ball.x <= palette.x + palette.width){
+            if (ball.y + ball.r > palette.y && ball.y < palette.y + palette.height)
+            {
+                ball.speedX = -ball.speedX
+            }
+        }
+
+    }
+    game.start()
+    game.canvasParameter(0, 0, 'position: relative; left: 380px;', 'darkgray');
+    main()
+    setInterval(update, 100)
+    palette.y = (300 - (palette.height / 2))
+</script>
+</html>
